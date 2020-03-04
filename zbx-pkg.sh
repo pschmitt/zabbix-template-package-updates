@@ -37,6 +37,7 @@ ubuntu_get_pkg_updates() {
 
 arch_repo_sync() {
   local last_sync now tdiff
+
   last_sync=$(arch_get_last_repo_sync_ts)
   now="$(date '+%s')"
 
@@ -50,6 +51,42 @@ arch_repo_sync() {
     # echo "No need to sync." >&2
     :
   fi
+}
+
+ubuntu_repo_sync() {
+  local cfile now tdiff last_sync
+
+  cfile="$(_ubuntu_get_cache_file)"
+  last_sync="$(ubuntu_get_last_repo_sync_ts)"
+  now="$(date '+%s')"
+
+  tdiff=$(( now - last_sync ))
+  # echo "$now - $last_sync = $tdiff vs $REPO_SYNC_INTERVAL"
+  if [[ "$tdiff" -gt "$REPO_SYNC_INTERVAL" ]]
+  then
+    _chroot apt-get update >/dev/null 2>&1
+    echo "$now" > "$cfile"
+  fi
+}
+
+_ubuntu_get_cache_file() {
+  echo "/tmp/$(basename "$0")_last_sync"
+}
+
+ubuntu_get_last_repo_sync_ts() {
+  local cfile
+
+  cfile="$(_ubuntu_get_cache_file)"
+  if ! [[ -e "$cfile" ]]
+  then
+    echo -1
+    return 1
+  fi
+  cat "$cfile"
+}
+
+ubuntu_get_last_upgrade_ts() {
+  echo "Not supported yet."
 }
 
 arch_pkg_updates_count() {
