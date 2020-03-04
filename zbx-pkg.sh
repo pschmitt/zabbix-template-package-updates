@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export PATH="${PATH}:/etc/zabbix/bin"
-
 REPO_SYNC_INTERVAL=${REPO_SYNC_INTERVAL:-7200}
 
 usage() {
@@ -11,7 +9,7 @@ usage() {
 _chroot() {
   if [[ -e /.dockerenv ]]
   then
-    sudo -E chroot.sh bash -c "$*"
+    sudo -E chroot /rootfs bash -c "$*"
   else
     eval "$@"
   fi
