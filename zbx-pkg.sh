@@ -3,7 +3,7 @@
 REPO_SYNC_INTERVAL=${REPO_SYNC_INTERVAL:-7200}
 
 usage() {
-  echo "Usage: $(basename "$0") last|list|count"
+  echo "Usage: $(basename "$0") last|list|count|sync"
 }
 
 _chroot() {
@@ -34,6 +34,10 @@ ubuntu_get_pkg_updates() {
 }
 
 arch_repo_sync() {
+  arch_pkg -Syy >/dev/null 2>&1
+}
+
+arch_repo_sync_gentle() {
   local last_sync now tdiff
 
   last_sync=$(arch_get_last_repo_sync_ts)
@@ -44,14 +48,14 @@ arch_repo_sync() {
   if [[ "$tdiff" -gt "$REPO_SYNC_INTERVAL" ]]
   then
     # echo "Syncing repos..." >&2
-    arch_pkg -Syy >/dev/null 2>&1
+    arch_repo_sync
   else
     # echo "No need to sync." >&2
     :
   fi
 }
 
-ubuntu_repo_sync() {
+ubuntu_repo_sync_gentle() {
   local cfile now tdiff last_sync
 
   cfile="$(_ubuntu_get_cache_file)"
@@ -62,9 +66,16 @@ ubuntu_repo_sync() {
   # echo "$now - $last_sync = $tdiff vs $REPO_SYNC_INTERVAL"
   if [[ "$tdiff" -gt "$REPO_SYNC_INTERVAL" ]]
   then
-    _chroot apt-get update >/dev/null 2>&1
-    echo "$now" > "$cfile"
+    ubuntu_repo_sync
   fi
+}
+
+ubuntu_repo_sync() {
+  local cfile
+
+  cfile="$(_ubuntu_get_cache_file)"
+  _chroot apt-get update >/dev/null 2>&1
+  date '+%s' > "$cfile"
 }
 
 _ubuntu_get_cache_file() {
@@ -84,7 +95,7 @@ ubuntu_get_last_repo_sync_ts() {
 }
 
 ubuntu_get_last_upgrade_ts() {
-  echo "Not supported yet."
+  echo "Not supported yet." >&2
 }
 
 arch_pkg_updates_count() {
@@ -139,6 +150,9 @@ then
     list|ls|--ls|--list|--list-available-updates)
       ACTION=list
       ;;
+    sync|-f|--force-sync|-s)
+      ACTION=sync
+      ;;
     *)
       usage
       exit 2
@@ -153,7 +167,12 @@ then
       ;;
   esac
 
-  ${fn}_repo_sync
+  if [[ "$ACTION" == "sync" ]]
+  then
+    ${fn}_repo_sync
+  else
+    ${fn}_repo_sync_gentle
+  fi
 
   case "$ACTION" in
     count)
