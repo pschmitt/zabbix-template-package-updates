@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-03-04T18:00:51Z</date>
+    <groups>
+        <group>
+            <name>Templates/Operating Systems</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Linux Package Updates</template>
+            <name>Linux Package Updates</name>
+            <groups>
+                <group>
+                    <name>Templates/Operating Systems</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Packages</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Number of available updates</name>
+                    <key>pkg.count</key>
+                    <delay>2h</delay>
+                    <applications>
+                        <application>
+                            <name>Packages</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Last repo sync</name>
+                    <key>pkg.last_repo_sync</key>
+                    <delay>2h</delay>
+                    <applications>
+                        <application>
+                            <name>Packages</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Last package upgrade</name>
+                    <key>pkg.last_upgrade</key>
+                    <delay>2h</delay>
+                    <applications>
+                        <application>
+                            <name>Packages</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Available package updates</name>
+                    <key>pkg.list</key>
+                    <delay>2h</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Packages</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+        </template>
+    </templates>
+</zabbix_export>

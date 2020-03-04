@@ -1,0 +1,3 @@
+Cmnd_Alias OPKG_UPDATE=/bin/opkg update
+Cmnd_Alias OPKG_LIST_UPGRADABLE=/bin/opkg list-upgradable
+zabbix ALL=(ALL) NOPASSWD: OPKG_UPDATE, OPKG_LIST_UPGRADABLE
