@@ -162,7 +162,7 @@ then
     arch)
       fn=arch
       ;;
-    ubuntu|debian|raspbian)
+    ubuntu|debian|raspbian|neon)
       fn=ubuntu
       ;;
   esac
