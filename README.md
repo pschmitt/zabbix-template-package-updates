@@ -14,7 +14,7 @@ You can bind-mount the supplied sudoers config with:
 
 Bear in mind that this file should be owned by root and its permissions set to `0600`.
 
-2. You obviously also need to make the script available as well: `-v ./zbx-pkg.sh:/usr/local/bin/zbx-pkg.sh`.
+2. You obviously also need to make the script available as well: `-v ./zbx-pkg.sh:/zabbix/bin/zbx-pkg.sh`.
 
 3. Pass the UserParameter config like so: `-v ./zabbix_agentd.d/pkg-updates.docker.conf:/etc/zabbix_agentd.d/pkg-updates.conf:ro`.
 
