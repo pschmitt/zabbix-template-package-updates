@@ -16,7 +16,9 @@ Bear in mind that this file should be owned by root and its permissions set to `
 
 2. You obviously also need to make the script available as well: `-v ./zbx-pkg.sh:/usr/local/bin/zbx-pkg.sh`.
 
-3. To be able to chroot inside the host you need mount the rootfs like so: `-v /:/rootfs:ro`.
+3. Pass the UserParameter config like so: `-v ./zabbix_agentd.conf.d/pkg-updates.docker.conf:/etc/zabbix_agentd.d/pkg-updates.conf:ro`.
+
+4. To be able to chroot inside the host you need mount the rootfs like so: `-v /:/rootfs:ro`.
 
 ### OpenWRT
 
