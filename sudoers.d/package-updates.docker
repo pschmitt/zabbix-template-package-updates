@@ -1,2 +1,1 @@
-Cmnd_Alias CHROOT=/usr/sbin/chroot /rootfs *
 zabbix ALL=(ALL) NOPASSWD:SETENV: CHROOT

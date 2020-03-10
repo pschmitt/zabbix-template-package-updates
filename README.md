@@ -4,13 +4,13 @@
 
 ### Docker
 
-**WIP**
-
 1. sudo
 
 This template requires `sudo` to be available inside the zabbix-agent container.
 
-You can bind-mount the supplied sudoers config with `-v ./sudoers/package-updates.docker:/etc/sudoers.d/package-updates:ro`.
+You can bind-mount the supplied sudoers config with:
+- `-v ./sudoers/alias-chroot.docker:/etc/sudoers.d/alias-chroot:ro`.
+- `-v ./sudoers/reboot-required.docker:/etc/sudoers.d/reboot-required:ro`.
 
 Bear in mind that this file should be owned by root and its permissions set to `0600`.
 

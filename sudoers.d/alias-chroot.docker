@@ -1,0 +1,1 @@
+Cmnd_Alias CHROOT=/usr/sbin/chroot /rootfs *
